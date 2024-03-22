@@ -1,0 +1,15 @@
+{
+    "name": "prg1-drf-js",
+    "version": "1.0.0",
+    "description": "Dataframe project",
+    "main": "dfr.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "jest": "^29.7.0"
+    }
+}
