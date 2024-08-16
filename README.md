@@ -229,4 +229,3 @@ Prior to actually submitting your final attempt you should ensure you have revie
 
 1. Refactored solution.
 2. Does your solution follow accepted coding conventions?
-3. Your 'test' code, commented out at the bottom of ```dfr.js```
