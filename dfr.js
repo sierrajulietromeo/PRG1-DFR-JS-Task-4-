@@ -12,7 +12,7 @@ function validNumber(value) { // value can be string or numeric
 
 
 function dataDimensions(dataframe) {
-  // returns a list [rows (int), cols (int)]
+  // returns a list [(int), (int)]
 }
 
 
