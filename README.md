@@ -87,7 +87,8 @@ To help you get started on this challenge consider following these initial steps
 
 1. The foundation type functions first as these will likely be easier and faster to complete and test). 
 2. The original datafile (reference ‘datatrafficdataset.csv’ contained 494,000 rows and 35 columns however we have sliced that down to 2001 rows and 21 columns; including headers).  You may also find it useful to create your own (even smaller test file) to help optimise your development and testing.
-   
+
+*NB: Please note that no external libraries other than those specified my be used.*   
 
 ## Some example calls to the functions and methods you will write:
 
