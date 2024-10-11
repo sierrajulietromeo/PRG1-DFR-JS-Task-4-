@@ -1,0 +1,11 @@
+protocol_type,src_bytes,dst_bytes,logged_in,lroot_shell,count,srv_count,serror_rate,srv_serror_rate,rerror_rate,srv_rerror_rate,same_srv_rate,diff_srv_rate,dst_host_same_srv_rate,dst_host_diff_srv_rate,dst_host_same_src_port_rate,dst_host_srv_diff_host_rate,dst_host_serror_rate,dst_host_srv_serror_rate,dst_host_rerror_rate,label
+tcp,0,0,0,0,107,19,1,1,0,0,0.18,0.06,0.02,0.06,0,0,1,1,0,neptune
+udp,105,147,0,0,1,1,0,0,0,0,1,0,0.98,0.01,0,0,0,0,0,normal
+icmp,1032,0,0,0,511,511,0,0,0,0,1,0,1,0,1,0,0,0,0,smurf
+tcp,198,1108,1,0,4,4,0,0,0,0,1,0,1,0,0.25,0.03,0,0,0,normal
+tcp,0,0,0,0,130,19,1,1,0,0,0.15,0.06,0.07,0.06,0,0,1,1,0,neptune
+icmp,520,0,0,0,511,511,0,0,0,0,1,0,1,0,1,0,0,0,0,smurf
+tcp,0,0,0,0,511,1,0.02,0,0.98,1,0,1,0,1,0,0,0.05,0,0.95,satan
+udp,28,0,0,0,93,91,0.01,0,0.01,0,0.98,0.03,0.36,0.02,0.36,0,0,0,0.49,teardrop
+icmp,1032,0,0,0,510,510,0,0,0,0,1,0,1,0,1,0,0,0,0,smurf
+tcp,325,1399,1,0,15,15,0,0,0,0,1,0,1,0,0.02,0.03,0,0,0,normal
