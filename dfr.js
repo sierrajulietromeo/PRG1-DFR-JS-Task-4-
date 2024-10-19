@@ -5,7 +5,6 @@ function fileExists(fileName) {
 }
 
 function validNumber(value) {
-  // value can be string or numeric
   // returns a boolean
 }
 
