@@ -11,17 +11,17 @@
 Here is one representation on a dataframe named ```df1```:
 
 ```js
-df1 = [ [ 1 , 2 , 3 ] , [ 4 , 5 , 6 ] , [ 7 , 8 , 9 ] , [ 10 , 11 , 12 ] ] 
+const df1 = [ [ 1 , 2 , 3 ] , [ 4 , 5 , 6 ] , [ 7 , 8 , 9 ] , [ 10 , 11 , 12 ] ] ;
 ```
 The same dataframe ```df1``` can also be represented like this, which can help our understanding of how it can be thought of as _rows and columns_.
 
 ```js
-df1 = [  
+const df1 = [  
   [ 1 , 2 , 3 ] , 
   [ 4 , 5 , 6 ] , 
   [ 7 , 8 , 9 ] , 
   [ 10 , 11 , 12 ] 
-] 
+];
 ```
 
 Our dataframe ```df1``` has *4* rows and *3* columns. To 'access' the 'first' element we use an 'index' value of 0.  Changing the numbers allow us to access values stored in different rows and columns.
@@ -31,20 +31,20 @@ df1 [0] [0] -> 1  // Position 0 in the first array and position 0 of the array a
 df1 [ 0 ] [ 2 ] -> 3 // Position 0 in the first array and position 2 of the array at that position gives us 3.
 df1 [ 3 ] [ 0 ] -> 10  // Position 3 in the first array and position 0 of the array at that position gives us 10.
 df1 [ 3 ] [ 2 ] -> 12 // Position 3 in the first array and position 2 of the array at that position gives us 12.
-df1 [ 4 ] [ 0 ] -> Error // There is no position 4 in the first array, so an error will occur.
+df1 [ 4 ] [ 0 ] -> TypeError // There is no position 4 in the first array, so an error will occur.
 ```
 
 A 'dataset' is a 1-dimensional array (aka a list). Essentially we can picture this as a single row (or, if easier as a single column).
 
 ```js
-ds1 = [ 13 , 14 , 15 ]
+const ds1 = [ 13 , 14 , 15 ];
 ```
 ```ds1``` dimensions are: 3 rows and 0 columns. However as mentioned above since we 'access' a list using a 0 as an index, for the purpose of this challenge we will use **-1** to indicate 'no columns'. Therefore, the dimensions are: 3 rows and -1 columns.
 
 ```js
 ds1 [ 0 ] -> 13
 ds1 [ 2 ] -> 15
-ds1 [ 3 ] -> Error: index out of range. // There is no position 3 (Positions are 0, 1 & 2)
+ds1 [ 3 ] -> TypeError // There is no position 3 (Positions are 0, 1 & 2)
 ```
 
 ![spacer](assets/spacer16x16.png)
@@ -63,13 +63,10 @@ ds1 [ 3 ] -> Error: index out of range. // There is no position 3 (Positions are
 **Task 3:** Create a calculate mean function. Your function must return the ‘mean’ average of all valid number values in the passed dataset. Invalid datasets (i.e., incorrect dimensions) result in a (boolean) false value being returned.
 
 **Task 4:** Create a find totals function. Your function must return the total of all valid numbers in the passed dataset). Invalid datasets (i.e., incorrect dimensions) should result in a (boolean) false value being returned.
+ 
+**Task 5:** Create a convert to number function. Your function must return a number indicating only values (in the specified column) that were coerced (i.e. converted) to a number data type. Values are coerced if they are a 'valid number' but not a numeric datatype (see ```validNumber``` function for more details).  Complex data types are typically 'pass-by-reference' meaning that the _dataframe is mutable i.e., changes are 'persistent’ so no additional return values are needed.
 
- ![spacer](assets/spacer8x8.png)
-**Experienced Level Challenges (Intermediate Attemptable):**
-  
-**Task 5:** Create a convert to float function. Your function must return a number indicating only values (in the specified column) that were coerced (i.e. converted) to a number data type. Values are coerced if they are a 'valid number' but not a numeric datatype (see valid number function for more details).  Complex data types are typically 'pass-by-reference' (in Python this is 'pass-by-object-reference') meaning that the _dataframe is mutable i.e., changes are 'persistent’ so no additional return values are needed.
-
-**Task 6:** Create a flatten dataframe function. Your function must return a (new) flat dataset instance of the passed dataframe. Only dataframes with the shape ```[ n , 1 ]``` ( any number of rows but only 1 column) can be flattened by this function. Using this function creates a valid dataset from single column slices and should be compatible with functions that expect datasets rather than dataframes (e.g., findtotal, calculatemean, etc). This function should not alter any existing value's data type; invalid requests should return an empty list.
+**Task 6:** Create a flatten dataframe function. Your function must return a (new) flat dataset instance of the passed dataframe. Only dataframes with the shape ```[ n , 1 ]``` ( any number of rows but only 1 column) can be flattened by this function. Using this function creates a valid dataset from single column slices and should be compatible with functions that expect datasets rather than dataframes (e.g., ```findTotal```, ```calculateMean```, etc). This function should not alter any existing value's data type; invalid requests should return an empty list.
   
 **Task 7:** Create a load CSV file function. Your function must return an array (aka a list) containing three elements. The source CSV data and the source's original dimensions (rows and columns, not including any ignored rows and/or columns ). Specific rows and columns can be 'ignored' (not included in the returned dataframe), for example to ignore the first row in the source CSV use: ```ignorerows = [ 0 ]``` . To ignore the first and second row use: ```ignorerows = [ 0, 1 ]```, the same applies to ```ignorecols```.  If the file specified does not exist the return state should be: ```[ [ ] , -1 , -1 ]```. 
 
@@ -79,16 +76,12 @@ ds1 [ 3 ] -> Error: index out of range. // There is no position 3 (Positions are
   
 
 
-
 ![spacer](assets/spacer16x16.png)
-### Suggested Steps
+## Notes
 
-To help you get started on this challenge consider following these initial steps:
+1. The original datafile (reference ‘datatrafficdataset.csv’ contained 494,000 rows and 35 columns however we have sliced that down to 2001 rows and 21 columns; including headers).  You may also find it useful to create your own (even smaller test file) to help optimise your development and testing.
 
-1. The foundation type functions first as these will likely be easier and faster to complete and test). 
-2. The original datafile (reference ‘datatrafficdataset.csv’ contained 494,000 rows and 35 columns however we have sliced that down to 2001 rows and 21 columns; including headers).  You may also find it useful to create your own (even smaller test file) to help optimise your development and testing.
-
-*NB: Please note that no external libraries other than those specified my be used.*   
+2. *NB: Please note that no external libraries other than those specified my be used.*   
 
 ## Some example calls to the functions and methods you will write:
 
@@ -122,13 +115,13 @@ validNumber ( '0.0.1' ) -> false
 **Example 3: dataDimensions**
 
 ```js
-df1 = [ [ 'tcp', 1, 2, 3 ],
+const df1 = [ [ 'tcp', 1, 2, 3 ],
         [ 'icmp', 4, 5, 6 ],
-        [ 'tcp', 7, 8, 9 ] ]
+        [ 'tcp', 7, 8, 9 ] ];
 
-ds2 = [ 1.1 , 1.2 , 0 , 0 , 1.1 ]
-ds3 = [ 'AAA' , 'BBB' , 'CCC' ]
-ds4 = Undefined 
+const ds2 = [ 1.1 , 1.2 , 0 , 0 , 1.1 ];
+const ds3 = [ 'AAA' , 'BBB' , 'CCC' ];
+const ds4; // undefined 
 
 dataDimensions ( df1 ) -> [ 3 , 4 ]
 dataDimensions ( ds2 ) -> [ 5 , -1 ]
@@ -139,8 +132,8 @@ dataDimensions ( ds4 ) -> [ -1 , -1 ]
 
 **Example 4: calculateMean**
 ```js
-ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ]
-ds2 = [ 1.9 ]
+const ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ];
+const ds2 = [ 1.9 ];
 calculateMean(ds1) -> 8.2
 calculateMean(ds2) -> 1.9
 ```
@@ -148,46 +141,46 @@ calculateMean(ds2) -> 1.9
 
 **Example 5: findTotal**
 ```js
-ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ]
+const ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ];
 dataDimensions(ds1) -> [ 7, -1 ]
 findTotal(ds1) -> 57.4
 
 ```
 ![spacer](assets/spacer16x16.png)
 
-**Example 6: convertToFloat**
+**Example 6: convertToNumber**
 ```js
-df1 = [ [ 'tcp', 1, '2', 3 ],
+const df1 = [ [ 'tcp', 1, '2', 3 ],
         [ '1.2', 4, '5', 6 ],
-        [ 'tcp', 7,  8,  9 ] ]
+        [ 'tcp', 7,  8,  9 ] ];
         
-convertToFloat ( df1 , 0 ) -> 1
-convertToFloat ( df1 , 2 ) -> 2
+convertToNumber ( df1 , 0 ) -> 1
+convertToNumber ( df1 , 2 ) -> 2
 df1 -> [ [ 'tcp', 1, 2, 3 ], [ 1.2, 4, 5, 6 ], [ 'tcp', 7, 8, 9 ] ]
 ```
 ![spacer](assets/spacer16x16.png)
 
 **Example 7: flatten**
 ```js
-df1 = [ [ 5 ],
+const df1 = [ [ 5 ],
         [ 7 ],
-        [ 9 ] ]
-dataDimensions ( df1 ) -> [ 3 , 1 ] // 3 rows, 1 column
+        [ 9 ] ];
+dataDimensions ( df1 ) -> [ 3 , 1 ] 
 flatten ( df1 ) -> [ 5 , 7 , 9 ]
-dataDimensions ( flatten ( df1 ) ) -> [ 3 , -1 ] // 3 items in a row,, no columns
+dataDimensions ( flatten ( df1 ) ) -> [ 3 , -1 ] 
 
 
 df2 = [ 5, 7, 9 ]
-dataDimensions ( df2 ) -> [ 3 , -1 ] // 3 items in a row, no columns
-dataDimensions ( flatten ( df2 ) ) -> [ 0, -1 ] // no items in a row, no column
+dataDimensions ( df2 ) -> [ 3 , -1 ] 
+dataDimensions ( flatten ( df2 ) ) -> [ 0, -1 ] 
 flatten ( df2 ) -> [ ]
 ```
 ![spacer](assets/spacer16x16.png)
 
 **Example 8: loadCSV**
 ```js
-ignorerows = [ 0 ];
-ignorecols = [   ];
+const ignorerows = [ 0 ];
+const ignorecols = [   ];
 
 [ dataframe, rows, cols ] = loadCSV ( './datatrafficdataset_2000.csv', ignorerows , ignorecols )
 rows --> 2001
@@ -202,8 +195,8 @@ cols --> 21
 
 **Example 9: calculateMedian**
 ```js
-ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ]
-ds2 = [ '5' ]
+const ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ];
+const ds2 = [ '5' ];
 calculateMedian ( df1 ) -> 1.9
 calculateMedian ( df2 ) -> 5.0
 
@@ -212,9 +205,9 @@ calculateMedian ( df2 ) -> 5.0
 
 **Example 10: createSlice**
 ```js
-df1 = [ [ 'tcp', 1, 2, 3 ],
+const df1 = [ [ 'tcp', 1, 2, 3 ],
         [ 'icmp', 4, 5, 6 ],
-        [ 'tcp', 7, 8, 9 ] ]
+        [ 'tcp', 7, 8, 9 ] ];
 
 createSlice ( df1 , 0 , 'icmp' , [ 0 , 2 ] )  -> [ [ 'icmp', 5 ] ]
 createSlice ( df1 , 0 , 'tcp' , [ 0 , 2 ] )   -> [ [ 'tcp' , 2 ] , [ 'tcp' , 8 ] ]
