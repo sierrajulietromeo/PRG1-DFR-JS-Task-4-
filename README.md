@@ -1,225 +1,472 @@
-
-## Task 4 Dataframe project
+# DataFrame Project Documentation
 
 ### This project uses many of the same techniques you've already completed in the previous tasks. This project has been specifically designed to be a challenging task. Don't forget - you do not need to complete ALL tasks in this assignment to PASS this module overall.
 ![spacer](assets/spacer8x8.png)
 
-### Important Task Information - what's a dataframe and what's a dataset?  
+## Overview and Key Concepts
 
-* A ‘dataframe’ is a 2-dimensional array (aka a 2-dimensional list or a list of lists). Essentially we can picture it as a spreadsheet (i.e. a grid of rows and columns).
+### What is a DataFrame?
+A DataFrame is a 2-dimensional array, similar to a spreadsheet with rows and columns. You can think of it as a table of data.
 
-Here is one representation on a dataframe named ```df1```:
-
-```js
-const df1 = [ [ 1 , 2 , 3 ] , [ 4 , 5 , 6 ] , [ 7 , 8 , 9 ] , [ 10 , 11 , 12 ] ] ;
-```
-The same dataframe ```df1``` can also be represented like this, which can help our understanding of how it can be thought of as _rows and columns_.
-
-```js
-const df1 = [  
-  [ 1 , 2 , 3 ] , 
-  [ 4 , 5 , 6 ] , 
-  [ 7 , 8 , 9 ] , 
-  [ 10 , 11 , 12 ] 
+```javascript
+// Example DataFrame
+const weatherData = [
+  ['date',     'temp', 'humidity'], // Headers
+  ['2024-01',   23.5,    45     ], // Row 1
+  ['2024-02',   25.1,    42     ]  // Row 2
 ];
+
+// Accessing elements using [row][column]:
+weatherData[1][1];  // → 23.5 (First data row, temperature column)
+weatherData[2][2];  // → 42 (Second data row, humidity column)
 ```
 
-Our dataframe ```df1``` has *4* rows and *3* columns. To 'access' the 'first' element we use an 'index' value of 0.  Changing the numbers allow us to access values stored in different rows and columns.
+### What is a Dataset?
+A Dataset is a 1-dimensional array - like a single row or column of data.
 
-```js
-df1 [0] [0] -> 1  // Position 0 in the first array and position 0 of the array at that position gives us 1.
-df1 [ 0 ] [ 2 ] -> 3 // Position 0 in the first array and position 2 of the array at that position gives us 3.
-df1 [ 3 ] [ 0 ] -> 10  // Position 3 in the first array and position 0 of the array at that position gives us 10.
-df1 [ 3 ] [ 2 ] -> 12 // Position 3 in the first array and position 2 of the array at that position gives us 12.
-df1 [ 4 ] [ 0 ] -> TypeError // There is no position 4 in the first array, so an error will occur.
+```javascript
+// Example Dataset
+const temperatures = [23.5, 25.1, 24.8, 26.2];
+
+// Accessing elements:
+temperatures[0];  // → 23.5 (First temperature)
+temperatures[3];  // → 26.2 (Fourth temperature)
 ```
 
-A 'dataset' is a 1-dimensional array (aka a list). Essentially we can picture this as a single row (or, if easier as a single column).
+## Core Functions
 
-```js
-const ds1 = [ 13 , 14 , 15 ];
-```
-```ds1``` dimensions are: 3 rows and 0 columns. However as mentioned above since we 'access' a list using a 0 as an index, for the purpose of this challenge we will use **-1** to indicate 'no columns'. Therefore, the dimensions are: 3 rows and -1 columns.
+### 1. Valid Number Check (`validNumber`)
+Determines if a value represents a valid number. Works with positive/negative numbers and integers/decimals.
 
-```js
-ds1 [ 0 ] -> 13
-ds1 [ 2 ] -> 15
-ds1 [ 3 ] -> TypeError // There is no position 3 (Positions are 0, 1 & 2)
-```
-
-![spacer](assets/spacer16x16.png)
- 
-## Task instructions  
-
-**FileExists:** A file exists function has already been provided for you to use. This function is designed around the work you have already completed (Data File Parser) and returns a boolean value (true/false) depending on whether the specific file exists. 
-
- ![spacer](assets/spacer8x8.png)
-**Intermediate Level Challenges (Beginner Attemptable):**
-  
-**Task 1:** Create a valid number function. Your function must return a boolean value (true/false) depending on whether the argument passed is a valid number. For the purpose of this challenge a valid number can be: positive (unsigned) or negative (signed), integer or float
-  
-**Task 2:** Create a data dimensions function. Your function must return a set of values representing the dimensions of the dataframe or dataset passed in as an argument. Ensure you test with dataframes and datasets (numeric and string). -1 is used to represent 'no data' on that axis (rows and/or columns); e.g. a dataset or None.
-
-**Task 3:** Create a calculate mean function. Your function must return the ‘mean’ average of all valid number values in the passed dataset. Invalid datasets (i.e., incorrect dimensions) result in a (boolean) false value being returned.
-
-**Task 4:** Create a find totals function. Your function must return the total of all valid numbers in the passed dataset). Invalid datasets (i.e., incorrect dimensions) should result in a (boolean) false value being returned.
- 
-**Task 5:** Create a convert to number function. Your function must return a number indicating only values (in the specified column) that were coerced (i.e. converted) to a number data type. Values are coerced if they are a 'valid number' but not a numeric datatype (see ```validNumber``` function for more details).  Complex data types are typically 'pass-by-reference' meaning that the _dataframe is mutable i.e., changes are 'persistent’ so no additional return values are needed.
-
-**Task 6:** Create a flatten dataframe function. Your function must return a (new) flat dataset instance of the passed dataframe. Only dataframes with the shape ```[ n , 1 ]``` ( any number of rows but only 1 column) can be flattened by this function. Using this function creates a valid dataset from single column slices and should be compatible with functions that expect datasets rather than dataframes (e.g., ```findTotal```, ```calculateMean```, etc). This function should not alter any existing value's data type; invalid requests should return an empty list.
-  
-**Task 7:** Create a load CSV file function. Your function must return an array (aka a list) containing three elements. The source CSV data and the source's original dimensions (rows and columns, not including any ignored rows and/or columns ). Specific rows and columns can be 'ignored' (not included in the returned dataframe), for example to ignore the first row in the source CSV use: ```ignorerows = [ 0 ]``` . To ignore the first and second row use: ```ignorerows = [ 0, 1 ]```, the same applies to ```ignorecols```.  If the file specified does not exist the return state should be: ```[ [ ] , -1 , -1 ]```. 
-
-**Task 8:** Create a calculate median function. Your function must return the data value separating the upper half of the number values based on the passed dataset from the lower half; invalid datasets (i.e., incorrect dimensions) result in a (boolean) false value being returned.
-
-**Task 9:** Create a slicing function. Your function must return a (new) dataframe 'instance' based on sliced data from the passed dataframe. Rows are selected when the value in a specified 'column (colindex : 0) equals _colpattern (e.g. ```[ currentrow ] [ _colindex ] == colpattern``` or ```value [ 0 ] [ 0 ] == 'tpc'```). Only columns specified in the ```exportcols``` argument should be included in the slice.  Wildcard requirements: using '*' as the ```colpattern``` must match 'any' value in the specified ```colindex```. This allows 'all rows' to be selected for the slice.  ```exportcols``` is optional ( default value = ```[ ]``` ) meaning ‘not’ passing an argument or passing an empty array (aka a list) will allow all columns to be selected for the slice.
-  
-
-
-![spacer](assets/spacer16x16.png)
-## Notes
-
-1. The original datafile (reference ‘datatrafficdataset.csv’ contained 494,000 rows and 35 columns however we have sliced that down to 2001 rows and 21 columns; including headers).  You may also find it useful to create your own (even smaller test file) to help optimise your development and testing.
-
-2. *NB: Please note that no external libraries other than those specified my be used.*   
-
-## Some example calls to the functions and methods you will write:
-
-**Example 1: File exists**
-
-```js
-fileExists ( './datatrafficdataset_2000.csv' ) // returns true as the file does exist. 
-fileExists ( './wrongfilename.csv' ) // returns false as the file does not exist.
-
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 2: validNumber**
-
-```js
-validNumber ( '0.0' ) -> true
-validNumber ( '0.1' ) -> true
-validNumber ( '-1.12' ) -> true
-validNumber ( '-5' ) -> true
-validNumber ( '5' ) -> true
-validNumber ( 1.3 ) -> true
-validNumber ( 1 ) -> true
-validNumber ( 5. ) -> true
-validNumber ( '5.' ) -> false
-validNumber ( '+5' ) -> false
-validNumber ( '.' ) -> false
-validNumber ( '0.0.1' ) -> false
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 3: dataDimensions**
-
-```js
-const df1 = [ [ 'tcp', 1, 2, 3 ],
-        [ 'icmp', 4, 5, 6 ],
-        [ 'tcp', 7, 8, 9 ] ];
-
-const ds2 = [ 1.1 , 1.2 , 0 , 0 , 1.1 ];
-const ds3 = [ 'AAA' , 'BBB' , 'CCC' ];
-const ds4; // undefined 
-
-dataDimensions ( df1 ) -> [ 3 , 4 ]
-dataDimensions ( ds2 ) -> [ 5 , -1 ]
-dataDimensions ( ds3 ) -> [ 3 , -1 ]
-dataDimensions ( ds4 ) -> [ -1 , -1 ]
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 4: calculateMean**
-```js
-const ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ];
-const ds2 = [ 1.9 ];
-calculateMean(ds1) -> 8.2
-calculateMean(ds2) -> 1.9
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 5: findTotal**
-```js
-const ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ];
-dataDimensions(ds1) -> [ 7, -1 ]
-findTotal(ds1) -> 57.4
-
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 6: convertToNumber**
-```js
-const df1 = [ [ 'tcp', 1, '2', 3 ],
-        [ '1.2', 4, '5', 6 ],
-        [ 'tcp', 7,  8,  9 ] ];
-        
-convertToNumber ( df1 , 0 ) -> 1
-convertToNumber ( df1 , 2 ) -> 2
-df1 -> [ [ 'tcp', 1, 2, 3 ], [ 1.2, 4, 5, 6 ], [ 'tcp', 7, 8, 9 ] ]
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 7: flatten**
-```js
-const df1 = [ [ 5 ],
-        [ 7 ],
-        [ 9 ] ];
-dataDimensions ( df1 ) -> [ 3 , 1 ] 
-flatten ( df1 ) -> [ 5 , 7 , 9 ]
-dataDimensions ( flatten ( df1 ) ) -> [ 3 , -1 ] 
-
-
-df2 = [ 5, 7, 9 ]
-dataDimensions ( df2 ) -> [ 3 , -1 ] 
-dataDimensions ( flatten ( df2 ) ) -> [ 0, -1 ] 
-flatten ( df2 ) -> [ ]
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 8: loadCSV**
-```js
-const ignorerows = [ 0 ];
-const ignorecols = [   ];
-
-[ dataframe, rows, cols ] = loadCSV ( './datatrafficdataset_2000.csv', ignorerows , ignorecols )
-rows --> 2001
-cols --> 21
-
-dataDimensions (dataframe)
-rows --> 2000
-cols --> 21
-
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 9: calculateMedian**
-```js
-const ds1 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ];
-const ds2 = [ '5' ];
-calculateMedian ( df1 ) -> 1.9
-calculateMedian ( df2 ) -> 5.0
-
-```
-![spacer](assets/spacer16x16.png)
-
-**Example 10: createSlice**
-```js
-const df1 = [ [ 'tcp', 1, 2, 3 ],
-        [ 'icmp', 4, 5, 6 ],
-        [ 'tcp', 7, 8, 9 ] ];
-
-createSlice ( df1 , 0 , 'icmp' , [ 0 , 2 ] )  -> [ [ 'icmp', 5 ] ]
-createSlice ( df1 , 0 , 'tcp' , [ 0 , 2 ] )   -> [ [ 'tcp' , 2 ] , [ 'tcp' , 8 ] ]
-createSlice ( df1 , 0 , 'tcp' )               -> [ [ 'tcp' , 1 , 2 , 3 ] , [ 'tcp' , 7 , 8 , 9 ] ]
-createSlice ( df1 , 1 , '*' )                 -> [ [ 'tcp' , 1, 2, 3 ] , [ 'icmp' , 4 , 5 , 6 ] , [ 'tcp' , 7 , 8 , 9 ] ]
-
+```javascript
+validNumber('0.1');     // → true
+validNumber('-1.12');   // → true
+validNumber(5);         // → true
+validNumber(-10);       // → true
+validNumber('5.');      // → false (decimal point must be followed by digits)
+validNumber('+5');      // → false (explicit plus sign not allowed)
+validNumber('0.0.1');   // → false (multiple decimal points)
+validNumber('three');   // → false (not a number)
 ```
 
-## Submission Checklist
+### 2. Data Dimensions (`dataDimensions`)
+Returns the dimensions [rows, columns] of a dataframe or dataset.
 
+```javascript
+const salesData = [
+  ['Q1', 1000, 1200, 950],
+  ['Q2', 1100, 1300, 975],
+  ['Q3', 1200, 1400, 1000]
+];
 
-Prior to actually submitting your final attempt you should ensure you have reviewed and considered the following checklist.
+dataDimensions(salesData);        // → [3, 4] (3 rows, 4 columns)
+dataDimensions([1000, 1100]);    // → [2, -1] (Dataset with 2 elements)
+dataDimensions(undefined);        // → [-1, -1] (No data)
+```
 
-1. Refactored solution.
-2. Does your solution follow accepted coding conventions?
+### 3. Calculate Mean (`calculateMean`)
+Calculates the average of all valid numbers in a dataset.
+
+```javascript
+const salesFigures = [1500, 1900, 2000, 1750, '1800', 'invalid'];
+calculateMean(salesFigures);  // → 1790 (averages all valid numbers including '1800')
+
+const invalidDataset = [['not'], ['a'], ['dataset']];
+calculateMean(invalidDataset);  // → false (invalid dimensions)
+```
+
+### 4. Find Totals (`findTotal`)
+Sums all valid numbers in a dataset.
+
+```javascript
+const monthlyRevenue = [1500.50, 1900.25, '2000.00', 1750.75, 'pending'];
+findTotal(monthlyRevenue);  // → 7151.50 (sums all valid numbers including '2000.00')
+
+const invalidInput = [[100], [200]];  // 2D array instead of dataset
+findTotal(invalidInput);  // → false (invalid dimensions)
+```
+
+### 5. Convert to Number (`convertToNumber`)
+Converts string numbers to actual numbers in a specified column.
+
+```javascript
+const trafficData = [
+  ['protocol', 'requests', 'latency'], // Column indices: 0, 1, 2
+  ['tcp',      '1000',    '2.5'    ], //                ↓  ↓  ↓
+  ['udp',      '1500',    '1.8'    ]  //                0  1  2
+];
+
+// Convert string numbers in 'requests' column (index 1)
+convertToNumber(trafficData, 1);  // → 2 (converted '1000' and '1500' to numbers)
+// trafficData is now:
+// [
+//   ['protocol', 'requests', 'latency'],
+//   ['tcp',       1000,     '2.5'    ],  // '1000' → 1000
+//   ['udp',       1500,     '1.8'    ]   // '1500' → 1500
+// ]
+
+// Convert string numbers in 'latency' column (index 2)
+convertToNumber(trafficData, 2);  // → 2 (converted '2.5' and '1.8' to numbers)
+// trafficData is now:
+// [
+//   ['protocol', 'requests', 'latency'],
+//   ['tcp',       1000,      2.5     ],  // '2.5' → 2.5
+//   ['udp',       1500,      1.8     ]   // '1.8' → 1.8
+// ]
+```
+
+### 6. Flatten DataFrame (`flatten`)
+Converts a single-column dataframe into a dataset. Only works on dataframes with exactly one column.
+
+```javascript
+const temperatures = [
+  [23.5],
+  [25.1],
+  [24.8]
+];
+
+flatten(temperatures);           // → [23.5, 25.1, 24.8]
+dataDimensions(temperatures);    // → [3, 1]
+dataDimensions(flatten(temperatures));  // → [3, -1]
+
+// Won't flatten multi-column dataframes
+const invalidData = [
+  [23.5, 45],
+  [25.1, 42]
+];
+flatten(invalidData);  // → [] (empty array returned for invalid input)
+```
+
+### 7. Load CSV (`loadCSV`)
+
+#### Parameters
+
+1. `filepath` (string)
+   - The path to the CSV file to load
+   - Can be relative (e.g., './data/sales.csv') or absolute
+   - Required parameter
+   - Example: `'./sales_daata.csv'`
+
+2. `ignoreRows` (array of numbers, optional)
+   - Array of row indices to skip when loading the data
+   - Zero-based indexing (0 = first row, 1 = second row, etc.)
+   - Common use: `[0]` to skip header row
+   - Default value: `[]` (include all rows)
+   - Examples:
+     - `[0]` - Skip first row
+     - `[0, 1]` - Skip first and second rows
+     - `[]` - Skip no rows
+
+3. `ignoreCols` (array of numbers, optional)
+   - Array of column indices to exclude from the loaded data
+   - Zero-based indexing (0 = first column, 1 = second column, etc.)
+   - Default value: `[]` (include all columns)
+   - Examples:
+     - `[0]` - Exclude first column
+     - `[0, 2]` - Exclude first and third columns
+     - `[]` - Exclude no columns
+
+#### Return Value
+
+Returns an array containing three elements: `[dataframe, totalRows, totalColumns]`
+1. `dataframe`: The loaded data as a 2D array
+2. `totalRows`: Number of rows in original file
+3. `totalColumns`: Number of columns in original file
+
+#### Sample CSV File (salesData.csv):
+```csv
+date,region,product,quantity,unit_price,total_sales,status
+2024-01-15,North,Laptop,5,999.99,4999.95,completed
+2024-01-15,South,Phone,10,499.99,4999.90,completed
+2024-01-16,North,Tablet,3,699.99,2099.97,pending
+2024-01-16,East,Laptop,7,999.99,6999.93,completed
+2024-01-17,West,Phone,4,499.99,1999.96,completed
+2024-01-17,South,Tablet,6,699.99,4199.94,cancelled
+```
+
+#### Example 1: Load entire CSV (skip header)
+```javascript
+const [salesData, totalRows, totalColumns] = loadCSV(
+    './salesData.csv',
+    [0],    // Ignore first row (headers)
+    []      // Include all columns
+);
+
+// totalRows → 7 (6 data rows + 1 header)
+// totalColumns → 7
+// salesData will be:
+// [
+//   ['2024-01-15', 'North', 'Laptop', '5', '999.99', '4999.95', 'completed'],
+//   ['2024-01-15', 'South', 'Phone',  '10', '499.99', '4999.90', 'completed'],
+//   ['2024-01-16', 'North', 'Tablet', '3', '699.99', '2099.97', 'pending'],
+//   ['2024-01-16', 'East',  'Laptop', '7', '999.99', '6999.93', 'completed'],
+//   ['2024-01-17', 'West',  'Phone',  '4', '499.99', '1999.96', 'completed'],
+//   ['2024-01-17', 'South', 'Tablet', '6', '699.99', '4199.94', 'cancelled']
+// ]
+```
+
+#### Example 2: Load CSV (skip header and ignore some columns)
+```javascript
+const [filteredData, rows, cols] = loadCSV(
+    './salesData.csv',
+    [0],         // Ignore header row
+    [0, 5, 6]    // Ignore date, total_sales, and status columns
+);
+
+// rows → 7 (original row count unchanged)
+// cols → 7 (original column count unchanged)
+// filteredData will be:
+// [
+//   ['North', 'Laptop', '5', '999.99'],
+//   ['South', 'Phone',  '10', '499.99'],
+//   ['North', 'Tablet', '3', '699.99'],
+//   ['East',  'Laptop', '7', '999.99'],
+//   ['West',  'Phone',  '4', '499.99'],
+//   ['South', 'Tablet', '6', '699.99']
+// ]
+```
+
+#### Example 3: Loading a non-existent file
+```javascript
+const [emptyData, rows, cols] = loadCSV('./nonexistent.csv');
+// Returns: [[], -1, -1]
+```
+
+#### Key Points:
+1. The function returns an array containing three elements:
+   - The loaded data as a dataframe
+   - Total rows in original file (including headers)
+   - Total columns in original file
+
+2. The `ignoreRows` parameter:
+   - Array of row indices to skip
+   - Common use: `[0]` to skip header row
+   - Can skip multiple rows: `[0, 1, 2]`
+
+3. The `ignoreCols` parameter:
+   - Array of column indices to exclude
+   - Empty array `[]` keeps all columns
+   - Column indices are zero-based
+
+4. Data types:
+   - All values are initially loaded as strings
+   - Use `convertToNumber` afterwards if needed
+   - Empty cells become empty strings
+
+5. Error handling:
+   - Returns `[[], -1, -1]` if file doesn't exist
+   - Skips empty rows
+   - Handles varying row lengths
+
+#### Common Usage Pattern:
+```javascript
+// Load data and convert numeric columns
+const [salesData, rows, cols] = loadCSV('./salesData.csv', [0], []);
+if (rows !== -1) {
+    // Convert quantity column (index 3) to numbers
+    convertToNumber(salesData, 3);
+    
+    // Convert unit_price column (index 4) to numbers
+    convertToNumber(salesData, 4);
+    
+    // Convert total_sales column (index 5) to numbers
+    convertToNumber(salesData, 5);
+}
+```
+
+### 8. Calculate Median (`calculateMedian`)
+Finds the middle value of a sorted dataset.
+
+```javascript
+const responseTimes = [1.5, 1.9, 10.0, 50, -10, '3', '1'];
+calculateMedian(responseTimes);  // → 1.9
+
+const evenDataset = [1, 2, 3, 4];
+calculateMedian(evenDataset);    // → 2.5 (average of 2 and 3)
+
+const invalidData = [[1], [2]];  // 2D array instead of dataset
+calculateMedian(invalidData);    // → false
+```
+
+### 9. Creating a slice `createSlice`
+
+## Function Signature
+```javascript
+createSlice(dataframe, columnIndex, pattern, exportColumns = [])
+```
+
+## Parameters Explained
+
+### 1. `dataframe`
+- The source dataframe to slice from
+- Must be a 2D array (array of arrays)
+
+### 2. `columnIndex`
+- Which column to check for matches
+- Zero-based index (0 = first column, 1 = second column, etc.)
+- Used to identify which rows to include based on the pattern
+
+### 3. `pattern`
+- The value to match in the specified column
+- Special case: '*' matches any value (includes all rows)
+- Case-sensitive for string matches
+
+### 4. `exportColumns` (optional)
+- Array of column indices to include in the result
+- If omitted or empty array (`[]`), includes all columns
+- Zero-based indices
+
+## Detailed Examples
+
+### Example 1: Basic Filtering
+```javascript
+const salesData = [
+  ['region',  'product',  'sales',  'profit'],  // Column indices: 0, 1, 2, 3
+  ['north',   'laptop',    1000,     200   ],
+  ['south',   'phone',     500,      100   ],
+  ['north',   'tablet',    750,      150   ],
+  ['east',    'laptop',    1200,     240   ]
+];
+
+// Get all rows where region (column 0) is 'north'
+createSlice(salesData, 0, 'north');
+// Returns:
+// [
+//   ['north', 'laptop', 1000, 200],
+//   ['north', 'tablet', 750, 150]
+// ]
+```
+
+### Example 2: Filtering with Column Selection
+```javascript
+// Get sales and profit columns (2 and 3) for 'north' region
+createSlice(salesData, 0, 'north', [2, 3]);
+// Returns:
+// [
+//   [1000, 200],  // Only sales and profit columns for north rows
+//   [750, 150]
+// ]
+```
+
+### Example 3: Using Wildcard Pattern
+```javascript
+// Get all rows (*) but only product and sales columns (1 and 2)
+createSlice(salesData, 0, '*', [1, 2]);
+// Returns:
+// [
+//   ['laptop', 1000],
+//   ['phone',  500],
+//   ['tablet', 750],
+//   ['laptop', 1200]
+// ]
+```
+
+### Example 4: Filtering by Non-First Column
+```javascript
+// Get all rows where product (column 1) is 'laptop'
+createSlice(salesData, 1, 'laptop', [0, 2]);
+// Returns:
+// [
+//   ['north', 1000],  // Region and sales for laptop rows
+//   ['east',  1200]
+// ]
+```
+
+## Common Use Cases
+
+### Getting Specific Product Data
+```javascript
+const inventoryData = [
+  ['sku',    'type',     'stock',  'price'],
+  ['A123',   'mobile',    50,       499  ],
+  ['B456',   'tablet',    30,       699  ],
+  ['C789',   'mobile',    45,       549  ],
+  ['D012',   'laptop',    20,       999  ]
+];
+
+// Get all mobile devices' stock and price
+createSlice(inventoryData, 1, 'mobile', [2, 3]);
+// Returns:
+// [
+//   [50, 499],   // stock and price for first mobile
+//   [45, 549]    // stock and price for second mobile
+// ]
+```
+
+### Selecting Data by Category
+```javascript
+const transactionData = [
+  ['date',      'type',     'amount', 'status'   ],
+  ['2024-01-01', 'sale',     100,     'complete' ],
+  ['2024-01-02', 'refund',   -50,     'complete' ],
+  ['2024-01-03', 'sale',     75,      'pending'  ],
+  ['2024-01-04', 'sale',     200,     'complete' ]
+];
+
+// Get dates and amounts for completed sales only
+createSlice(transactionData, 1, 'sale', [0, 2]);
+// Returns:
+// [
+//   ['2024-01-01', 100],
+//   ['2024-01-03', 75],
+//   ['2024-01-04', 200]
+// ]
+```
+
+## Key Points to Remember
+
+1. Column Indexing:
+   - Always zero-based
+   - First column is 0, second is 1, etc.
+   - Invalid column indices are ignored
+
+2. Pattern Matching:
+   - Case sensitive ('SALE' ≠ 'sale')
+   - '*' is special wildcard character
+   - Exact match required for all other patterns
+
+3. Export Columns:
+   - Optional parameter
+   - If omitted, all columns are included
+   - Order matters: [2, 0] will return columns in that order
+   - Invalid indices are ignored
+
+4. Return Value:
+   - Always returns a new dataframe
+   - Original dataframe is unchanged
+   - Empty dataframe (`[]`) if no matches found
+
+## Implementation Requirements
+
+1. No external libraries allowed except those specifically provided
+2. All functions must handle invalid inputs gracefully
+3. Use -1 to indicate 'no data' on an axis
+4. Functions should validate input dimensions before processing
+5. Maintain consistent type handling (strings vs numbers)
+
+## Testing Guidelines
+
+1. Create small test files during development
+2. Test edge cases:
+   - Empty arrays
+   - Invalid numbers
+   - Mixed data types
+   - Missing or undefined values
+3. Verify dimension handling:
+   - Single-row dataframes
+   - Single-column dataframes
+   - Empty dataframes
+   - Datasets vs dataframes
+4. Check type conversions:
+   - String to number conversions
+   - Valid vs invalid number formats
+5. Test with both valid and invalid inputs:
+   - Correct file paths
+   - Incorrect file paths
+   - Valid column indices
+   - Invalid column indices
+   - Valid patterns for slicing
+   - Invalid patterns for slicing
+
+## File Processing Note
+The example dataset (`datatrafficdataset_2000.csv`) contains 2001 rows and 21 columns including headers. Consider creating smaller test files during development to optimize your workflow.
