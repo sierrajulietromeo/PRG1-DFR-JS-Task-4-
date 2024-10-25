@@ -1,6 +1,4 @@
 const fs = require("fs");
-const dfd = require("danfojs-node");
-const math = require("mathjs");
 
 function fileExists(filename) {
   return fs.existsSync(filename);
@@ -14,11 +12,15 @@ function dataDimensions(dataframe) {
 
 }
 
-function calculateMean(dataset) {
-
+function findTotal(dataset) {
+  
 }
 
-function findTotal(dataset) {
+function calculateMean(dataset) {
+  
+}
+
+function calculateMedian(dataset) {
 
 }
 
@@ -30,19 +32,12 @@ function flatten(dataframe) {
 
 }
 
-function csvToDf(csvFilePath) {
+function loadCSV(csvFile, ignoreRows, ignoreCols) {
 
 }
 
-function loadCSV(csvFile, ignorerows, ignorecols) {
 
-}
-
-function calculateMedian(dataset) {
-
-}
-
-function createSlice(dataframe, colindex, colpattern, exportcols = []) {
+function createSlice(dataframe, columnIndex, pattern, exportColumns = []) {
 
 }
 
