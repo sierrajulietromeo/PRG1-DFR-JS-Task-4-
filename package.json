@@ -10,8 +10,6 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "danfojs-node": "^1.1.2",
-        "jest": "^29.7.0",
-        "math": "^0.0.3"
+        "jest": "^29.7.0"
     }
 }
