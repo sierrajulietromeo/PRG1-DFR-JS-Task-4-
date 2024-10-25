@@ -23,7 +23,7 @@ weatherData[1][1]; // → 23.5 (First data row, temperature column)
 weatherData[2][2]; // → 42 (Second data row, humidity column)
 ```
 
-### What is a Dataset?
+### What is a dataset?
 
 A Dataset is a 1-dimensional array - like a single row or column of data.
 
@@ -69,7 +69,7 @@ dataDimensions([1000, 1100]); // → [2, -1] (Dataset with 2 elements)
 dataDimensions(undefined); // → [-1, -1] (No data)
 ```
 
-### Find Totals (`findTotal`)
+### Find Total (`findTotal`)
 
 Sums all valid numbers in a dataset.
 
@@ -78,7 +78,7 @@ const monthlyRevenue = [1500.5, 1900.25, "2000.00", 1750.75, "pending"];
 findTotal(monthlyRevenue); // → 7151.50 (sums all valid numbers including '2000.00')
 
 const invalidInput = [[100], [200]]; // 2D array instead of dataset
-findTotal(invalidInput); // → false (invalid dimensions)
+findTotal(invalidInput); // → 0 (invalid dimensions)
 ```
 
 ### Calculate Mean (`calculateMean`)
@@ -93,6 +93,20 @@ const invalidDataset = [["not"], ["a"], ["dataset"]];
 calculateMean(invalidDataset); // → 0 (invalid dimensions)
 ```
 
+### Calculate Median (`calculateMedian`)
+
+Finds the middle value of a sorted dataset.
+
+```javascript
+const responseTimes = [1.5, 1.9, 10.0, 50, -10, "3", "1"];
+calculateMedian(responseTimes); // → 1.9
+
+const evenDataset = [1, 2, 3, 4];
+calculateMedian(evenDataset); // → 2.5 (average of 2 and 3)
+
+const invalidData = [[1], [2]]; // 2D array instead of dataset
+calculateMedian(invalidData); // → 0
+```
 ### Convert to Number (`convertToNumber`)
 
 Converts string numbers to actual numbers in a specified column.
@@ -151,7 +165,7 @@ flatten(invalidData); // → [] (empty array returned for invalid input)
    - The path to the CSV file to load
    - Can be relative (e.g., './data/sales.csv') or absolute
    - Required parameter
-   - Example: `'./sales_daata.csv'`
+   - Example: `'./sales_data.csv'`
 
 2. `ignoreRows` (array of numbers, optional)
 
@@ -292,22 +306,8 @@ if (rows !== -1) {
 }
 ```
 
-### 8. Calculate Median (`calculateMedian`)
 
-Finds the middle value of a sorted dataset.
-
-```javascript
-const responseTimes = [1.5, 1.9, 10.0, 50, -10, "3", "1"];
-calculateMedian(responseTimes); // → 1.9
-
-const evenDataset = [1, 2, 3, 4];
-calculateMedian(evenDataset); // → 2.5 (average of 2 and 3)
-
-const invalidData = [[1], [2]]; // 2D array instead of dataset
-calculateMedian(invalidData); // → false
-```
-
-### 9. Creating a slice `createSlice`
+### Creating a slice `createSlice`
 
 ## Function Signature
 
