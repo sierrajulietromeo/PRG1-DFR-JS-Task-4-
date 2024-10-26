@@ -1,71 +1,55 @@
-const fs = require('fs'); 
-
+const fs = require("fs");
 
 function fileExists(filename) {
-  // returns true or false
+  return fs.existsSync(filename);
 }
 
-
-function validNumber(value) { // value can be string or numeric
- // returns a boolean 
+function validNumber(value) {
+  
 }
-
 
 function dataDimensions(dataframe) {
-  // returns a list [(int), (int)]
+
 }
-
-
-function calculateMean(dataset) {
-  // returns a float or false
-  
-}
-
 
 function findTotal(dataset) {
-  // returns float or false
-  
-} 
-
-
-function convertToFloat(dataframe, col){ //dataframe, integer
-  // returns an integer, which is the number that were  converted to floats.
   
 }
 
-
-function flatten(dataframe) {
-  // returns a dataset (a flattened dataframe)
+function calculateMean(dataset) {
   
 }
-
-
-function loadCSV(csvFile, ignorerows, ignorecols) {  // string, dataset, dataset
-  // returns a list comprising of [dataframe, rows (integer), cols (integer)]
-
-}
-
 
 function calculateMedian(dataset) {
-  // return float or false 
-  
+
+}
+
+function convertToNumber(dataframe, col) {
+
+}
+
+function flatten(dataframe) {
+
+}
+
+function loadCSV(csvFile, ignoreRows, ignoreCols) {
+
 }
 
 
-function createSlice(dataframe, colindex, colpattern, exportcols = []) { // dataframe, integer, string/numeric, dataset
-  // returns a dataframe
-  
+function createSlice(dataframe, columnIndex, pattern, exportColumns = []) {
+
 }
-
-
-
-
-
-
-
-
 
 module.exports = {
-  fileExists, validNumber, dataDimensions, calculateMean, findTotal, convertToFloat, flatten, 
-  loadCSV, calculateMedian, createSlice,
-} 
+  fileExists,
+  validNumber,
+  dataDimensions,
+  calculateMean,
+  findTotal,
+  convertToNumber,
+  flatten,
+  loadCSV,
+  calculateMedian,
+  createSlice,
+};

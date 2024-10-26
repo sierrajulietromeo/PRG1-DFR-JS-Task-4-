@@ -1,223 +1,244 @@
-const { fileExists, validNumber, dataDimensions, calculateMean, findTotal, convertToFloat, flatten, 
-    loadCSV, calculateMedian, createSlice } = require('./dfr.js');
+const {
+  fileExists,
+  validNumber,
+  dataDimensions,
+  calculateMean,
+  findTotal,
+  convertToNumber,
+  flatten,
+  loadCSV,
+  calculateMedian,
+  createSlice,
+} = require("./dfr.js");
 
-// Run the tests by typing npm test in the terminal below
-
-
-describe('Dataframe function tests', () => {
-    test("T01_FileExistsFunction", async function() {
-        expect( fileExists('./assets/testing/datatrafficdataset_10.csv') ).toBe( true );
-        expect( fileExists('./assets/testing/invalidfile.csv') ).toBe( false );
-        expect( fileExists('') ).toBe( false );
-      });
-
-    test("T02_ValidNumberFunction", async function() {
-    validnumbers = [ 0, 1, 100, 1000, 10000, -1, -100, 0.1, 1.1, 100.100, -1000, -1.1 ]
-        invalidnumbers = [ '10+', '1_0','1A', 'A1', '+100', '','A', '-1-', '0.1.', '+-1.1', '.', '5.', '1-', '1-.', '-', '+' ]
-    
-        for ( let n of validnumbers){
-            expect( validNumber ( n ) ).toBe( true );
-        }
-    
-        for ( let n of invalidnumbers){
-            expect( validNumber ( n ) ).toBe( false );
-        }
-    
+describe("DataFrame Project Tests", () => {
+  describe("fileExists", () => {
+    test("should identify existing files", () => {
+      expect(fileExists("./sales_data.csv")).toBe(true);
     });
 
-    test("T03_DataDimension", async function() {
-        let _df1 = [
-            [ 'tcp', 1, 2, 3 ],
-            [ 'icmp', 4, 5, 6 ],
-            [ 'tcp', 7, 8, 9 ],
-        ]
-        let _df2 = [
-            [ 1, 2, 3 ],
-            [ 4, 5, 6 ],
-            [ 7, 8, 9 ],
-        ]
-        let _ds1 = [ 13 , 14 , 15 ]
-        let _ds2 = [ 'aaaaa' , 'bbbbb' , 'ccccc' ]
-        let _ds3 = ''
-        let _ds4 = undefined
-        
-            
-        expect( dataDimensions(_df1) ).toMatchObject([  3  , 4 ] );
-        expect( dataDimensions(_df2) ).toMatchObject([  3  , 3 ] );
-        expect( dataDimensions(_ds1) ).toMatchObject([  3  , -1 ] );
-        expect( dataDimensions(_ds2) ).toMatchObject([  3  , -1 ] );
-        expect( dataDimensions(_ds3) ).toMatchObject([  -1  , -1 ] );
-        expect( dataDimensions(_ds4) ).toMatchObject([  -1  , -1 ] );
-      
+    test("handles nonexistent and empty file paths", () => {
+      expect(fileExists("./assets/testing/nonexistent.csv")).toBe(false);
+      expect(fileExists("")).toBe(false);
+    });
+  });
+
+  describe("validNumber", () => {
+    test("should identify valid numbers", () => {
+      const validCases = [
+        0,
+        1.5,
+        -1.12,
+        100,
+        -100,
+        "1.5",
+        "-1.12",
+        "100",
+      ];
+      validCases.forEach((number) => expect(validNumber(number)).toBe(true));
     });
 
-    test("T04_ConvertFloat", async function() {
-        let _df1 = [
-          [ 'tcp', 1, '2', 3 ],
-          [ '1.2', 4, '5', 6 ],
-          [ 'tcp', 7, 8, '9' ]
-        ]
-        
-        // 0 Col
-        expect( convertToFloat(_df1, 0) ).toBe( 1 );
-        expect( typeof(_df1[0][0]) ).toBe( 'string' );
-        expect( typeof(_df1[1][0]) ).toBe( 'number' );
-        expect( typeof(_df1[2][0]) ).toBe( 'string' );
-        
-        expect( _df1[0][0] ).toBe( 'tcp' );
-        expect( _df1[1][0] ).toBe( 1.2 );
-        expect( _df1[2][0] ).toBe( 'tcp' );
-        
-        // 2 Col
-        expect( convertToFloat(_df1, 2) ).toBe( 2 );
-        expect( typeof(_df1[0][2]) ).toBe( 'number' );
-        expect( typeof(_df1[1][2]) ).toBe( 'number' );
-        
-        expect( _df1[0][2] ).toBe( 2 );
-        expect( _df1[1][2] ).toBe( 5 );
-        expect( _df1[2][2] ).toBe( 8 );
-      
-        // 3 Col
-        expect( convertToFloat(_df1, 3) ).toBe( 1 );
-        expect( typeof(_df1[2][3]) ).toBe( 'number' );
-        
-        expect( _df1[0][3] ).toBe( 3 );
-        expect( _df1[1][3] ).toBe( 6 );
-        expect( _df1[2][3] ).toBe( 9 );
-      
+    test("handles invalid number formats and special characters", () => {
+      const invalidCases = [
+        "+1.5",
+        "5.",
+        "1.2.3",
+        "ABC",
+        "12ABC",
+        "",
+        ".",
+        "-",
+        "+-1.1",
+      ];
+      invalidCases.forEach((number) => expect(validNumber(number)).toBe(false));
+    });
+  });
+
+  describe("dataDimensions", () => {
+    test("should return correct dimensions for 2D array", () => {
+      const salesData = [
+        ["date", "region", "sales"],
+        ["2024-01", "North", 1000],
+        ["2024-01", "South", 1500],
+      ];
+      expect(dataDimensions(salesData)).toEqual([3, 3]);
     });
 
-    test("T05_CalculateMeanAverage", async function() {
-        let _ds1 = [ 10, 20, -5.5, 0.5, 'AA', 10, 25 ]
-        let _ds2 = [ -5.5 ]
-        let _ds3 = [ '-5.5' ]
-        let _ds4_FALSE = [ _ds1 ]
-        let _ds5_FALSE = [ ]
-        let _df6 = [ 1.5, 1.9, 10.0, 50, -10, '3', '1' ]
-        
-        expect( calculateMean(_ds1) ).toBe( 10.0 );
-        expect( calculateMean(_ds2) ).toBe( -5.5 );
-        expect( calculateMean(_ds3) ).toBe( -5.5 );
-        expect( calculateMean(_ds4_FALSE) ).toBe( false );
-        expect( calculateMean(_ds5_FALSE) ).toBe( false );
-        expect( calculateMean(_df6) ).toBe( 8.2 );
-        
-        let _mean = calculateMean( _ds2 )
-        expect( typeof(_mean) ).toBe( 'number' );
-      
-    });
-        
-    test("T06_FindTotal", async function() {
-        let _ds1 = [ 1.5, 1.9, 'AA', 10.0, 44.02, 50, -10, '3', '1' ]
-        let _ds2_FALSE = [ [ 0 ] ]
-        let _ds3_FALSE = ""
-        let _ds4 = [ 1 ]
-         
-        expect( findTotal(_ds1) ).toBe( 101.42 );
-        expect( findTotal(_ds2_FALSE) ).toBe( false );
-        expect( findTotal(_ds3_FALSE) ).toBe( false );
-        expect( typeof (findTotal(_ds1)) ).toBe( 'number' );
-        
-        expect( findTotal(_ds4) ).toBe( 1.0 );
-        expect( typeof (findTotal(_ds4)) ).toBe( 'number' );
-      
-      
+    test("should return correct dimensions for 1D array", () => {
+      const monthlySales = [1000, 1500, 2000];
+      expect(dataDimensions(monthlySales)).toEqual([3, -1]);
     });
 
-    test("T07_CalculateMedian", async function() {
-        let _ds1 = [ 1.5, 1.9, 10.0, 50, -10, 3, 1, 3, 55, 20 ] 
-        let _ds2 = [ 33, 3.4, 33.4, 55, 4, 43, 56 ] 
-        let _ds3 = [ 17, 10, 15, 17 ] 
-        let _ds4 = [ 17, 10, 18, 15, 17 ] 
-        let _ds5 = [ 17, 10, '18', 15, '', 17, 'AA' ]
-        let _ds6 = [ '19' ]
-        let _ds7_FALSE = [ ] 
-          
-        expect( calculateMedian (_ds1)).toBe( 3.0 )
-        expect( calculateMedian (_ds2)).toBe( 33.4 )
-        expect( calculateMedian (_ds3)).toBe( 16.0 )
-        expect( calculateMedian (_ds4)).toBe( 17.0 )
-        expect( calculateMedian (_ds5)).toBe( 17.0 )
-        expect( calculateMedian (_ds6)).toBe( 19.0 )
-        expect( typeof (calculateMedian (_ds6)) ).toBe( 'number' )
-        expect( calculateMedian (_ds7_FALSE) ).toBe( false )
+    test("handles empty and undefined inputs", () => {
+      expect(dataDimensions("")).toEqual([-1, -1]);
+      expect(dataDimensions(undefined)).toEqual([-1, -1]);
+    });
+  });
+
+  describe("findTotal", () => {
+    test("should calculate correct sum for valid datasets", () => {
+      const salesFigures = [1500.5, 1900.25, "2000.00", 1750.75];
+      expect(findTotal(salesFigures)).toBe(7151.5);
       
+      const singleSale = [1500.0];
+      expect(findTotal(singleSale)).toBe(1500.0);
     });
 
-    test("T08_Flatten", async function() {
-        let _df1 = [
-            [ '99' ],
-            [ 10 ],
-            [ 20 ],
-            [ 2.3 ],
-            [ 0.7 ]
-        ]
-        let _df2 = [ '99', 10, 20, 2.3, 0.7 ]
-        expect( flatten ( _df1 )).toMatchObject( _df2 );
-        expect( flatten ( _df2 )).toMatchObject( [] );
+    test("handles invalid inputs and 2D arrays", () => {
+      expect(findTotal([[1500.5]])).toBe(0); // 2D array not allowed
+      expect(findTotal("")).toBe(0);
+      const mixedData = [1500.5, 1900.25, "invalid", 1750.75];
+      expect(findTotal(mixedData)).toBe(5151.5); // Should skip invalid value
+    });
+  });
+
+  describe("calculateMean", () => {
+    test("should calculate correct average for valid datasets", () => {
+      const temperatures = [20.5, 21.0, "22.5", 19.8, 20.2];
+      expect(calculateMean(temperatures)).toBe(20.8);
       
+      const singleValue = ["-5.5"];
+      expect(calculateMean(singleValue)).toBe(-5.5);
     });
 
-    test("T09_CreateSlice", async function() {
-        let _df1 = [
-            [ 'head0',  'head1',  'head2',  'head3'  ],
-            [ 'tcp',     1,       2,         3       ],
-            [ 'icmp',    4,       5,         6       ],
-            [ 'tcp',     7,       8,         9       ],
-          ]
-          
-        let _df1_1 = createSlice ( _df1 , 0 , 'icmp' , [ 0 , 2 ] )   //-> [['icmp', 5]]
-        let _df1_2 = createSlice ( _df1 , 0 , 'tcp' , [ 0 , 2 ] )    //-> [['tcp', 2], ['tcp', 8]]
-        let _df1_3 = createSlice ( _df1 , 0 , 'tcp' )                //-> [['tcp', 1, 2, 3], ['tcp', 7, 8, 9]]
-        let _df1_4 = createSlice ( _df1 , 1 , '*' )                  //-> [['head0', 'head1', 'head2', 'head3'], ['tcp', 1, 2, 3], ['icmp', 4, 5, 6], ['tcp', 7, 8, 9]]
-        let _df1_5 = createSlice ( _df1 , 2 , 8, [ 2, 3 ] )          //-> [[8, 9]]
-          
-        expect( _df1_1 ).toMatchObject( [['icmp', 5]] );
-        expect( _df1_2 ).toMatchObject( [['tcp', 2], ['tcp', 8]] );
-        expect( _df1_3 ).toMatchObject( [['tcp', 1, 2, 3], ['tcp', 7, 8, 9]] );
-        expect( _df1_4 ).toMatchObject( [['head0', 'head1', 'head2', 'head3'], ['tcp', 1, 2, 3], ['icmp', 4, 5, 6], ['tcp', 7, 8, 9]] );
-        expect( _df1_5 ).toMatchObject( [[8, 9]] );
+    test("handles empty arrays and invalid data types", () => {
+      expect(calculateMean([])).toBe(0);
+      expect(calculateMean([[20.5, 21.0]])).toBe(0);
+      const mixedData = [20.5, 21.0, "invalid", 19.8, 20.2];
+      expect(calculateMean(mixedData)).toBe(20.375); // Should skip invalid value
+    });
+  });
+
+  describe("calculateMedian", () => {
+    test("should find correct middle value for valid datasets", () => {
+      const oddDataset = [10, 20, 30, 40, 50];
+      expect(calculateMedian(oddDataset)).toBe(30.0);
       
+      const evenDataset = [10, 20, 30, 40];
+      expect(calculateMedian(evenDataset)).toBe(25.0);
+      
+      const singleValue = ["19"];
+      expect(calculateMedian(singleValue)).toBe(19.0);
     });
 
-    test("T10_LoadCSV_IgnoringRowsCols_PatternMatched", async function() {
-        let _ignorerows = [ 0 ]; // no headers 
-        let _ignorecols = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]; // only cols 0, 1, & 20 should be loaded
-        let _sourcefile = './assets/testing/datatrafficdataset_10.csv' // 11 rows, 21 columns
-          
-        let [dataframe, rows, cols ] = loadCSV ( _sourcefile, _ignorerows , _ignorecols )
-        expect( rows ).toBe( 11 ) // check source file rows
-        expect( cols ).toBe( 21 ) // check source file cols
-      
-      });
+    test("handles empty arrays and invalid values", () => {
+      expect(calculateMedian([])).toBe(0);
+      const mixedDataset = [10, 20, "30", "invalid", 40, 50];
+      expect(calculateMedian(mixedDataset)).toBe(30.0);
+    });
+  });
 
-    test("T11_LoadCSV_IgnoringRowsCols_PatternMatchedColumnSlice_Flattened_Calculated", async function() {
-        let _ignorerows = [ 0 ]; // no headers 
-        let _ignorecols = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]; // only cols 0, 1, & 20 should be loaded
-        let _sourcefile = './assets/testing/datatrafficdataset_10.csv' // 11 rows, 21 columns
-          
-        let [dataframe, rows, cols ] = loadCSV ( _sourcefile, _ignorerows , _ignorecols )
-        expect( rows ).toBe( 11 ) // check source file rows
-        expect( cols ).toBe( 21 ) // check source file cols
-        
-        expect( dataframe[0] ).toMatchObject( ['tcp', '0', 'neptune'] ); // sample the expected loaded data
-        expect( dataframe[2] ).toMatchObject( ['icmp', '1032', 'smurf'] );
-        expect( dataframe[5] ).toMatchObject( ['icmp', '520', 'smurf'] );
-        expect( dataframe[9] ).toMatchObject( ['tcp', '325', 'normal'] );
-        
-        expect( dataDimensions (dataframe) ).toMatchObject( [10, 3] ); // check loaded dimensions based on the ignore
-        
-        // create a slice with only 'icmp' values and only col 2 (base 0 means actual col 1) 'source bytes'
-        let _df1 = createSlice ( dataframe , 0 , 'icmp' , [ 1 ] ) // --> [['1032'], ['520'], ['1032']]
-        expect( _df1 ).toMatchObject( [['1032'], ['520'], ['1032']] ); // confirm slice
-        
-        let _df1_flat = flatten ( _df1 ) // --> ['1032', '520', '1032']
-        expect( _df1_flat ).toMatchObject( ['1032', '520', '1032'] ); // confirm flat values
-        
-        let _sourcebytes_icmp = findTotal (_df1_flat) // --> 2584.0
-        expect( _sourcebytes_icmp ).toBe( 2584.0 ) // check final value
+  describe("convertToNumber", () => {
+    test("should convert string numbers to actual numbers", () => {
+      const salesData = [
+        ["region", "sales", "units"],
+        ["North", "1000", "50"],
+        ["South", "1500", "75"],
+      ];
       
-      }); 
-      
+      expect(convertToNumber(salesData, 1)).toBe(2);
+      expect(typeof salesData[1][1]).toBe("number");
+      expect(salesData[1][1]).toBe(1000);
+      expect(salesData[2][1]).toBe(1500);
+    });
 
+    test("handles non-numeric strings in conversion", () => {
+      const mixedData = [
+        ["region", "sales"],
+        ["North", "invalid"],
+        ["South", "1500"],
+      ];
+      expect(convertToNumber(mixedData, 1)).toBe(1); // Should only convert valid numbers
+    });
+  });
+
+  describe("flatten", () => {
+    test("should convert single-column DataFrame to Dataset", () => {
+      const monthlyTemperatures = [[20.5], [21.0], [22.5], [19.8], [20.2]];
+      expect(flatten(monthlyTemperatures)).toEqual([
+        20.5, 21.0, 22.5, 19.8, 20.2,
+      ]);
+    });
+
+    test("handles invalid data structures", () => {
+      const multiColumnData = [20.5, 21.0, 22.5];
+      expect(flatten(multiColumnData)).toEqual([]);
+    });
+  });
+
+  describe("createSlice", () => {
+    test("should create correct DataFrame slices", () => {
+      const salesData = [
+        ["date", "region", "product", "sales"],
+        ["2024-01", "North", "Laptop", 1000],
+        ["2024-01", "South", "Phone", 1500],
+        ["2024-01", "North", "Tablet", 2000],
+      ];
+
+      expect(createSlice(salesData, 1, "North", [1, 3])).toEqual([
+        ["North", 1000],
+        ["North", 2000],
+      ]);
+    });
+
+    test("should handle wildcard selections", () => {
+      const salesData = [
+        ["date", "region", "product", "sales"],
+        ["2024-01", "North", "Laptop", 1000],
+        ["2024-01", "South", "Phone", 1500],
+      ];
+
+      expect(createSlice(salesData, 0, "*", [1, 3])).toEqual([
+        ["region", "sales"],
+        ["North", 1000],
+        ["South", 1500],
+      ]);
+    });
+  });
+
+  describe("loadCSV", () => {
+    test("should correctly load and process CSV files", () => {
+      const [salesData, totalRows, totalColumns] = loadCSV(
+        "./sales_data.csv",
+        [0],
+        []
+      );
+
+      expect(totalRows).toBe(7);
+      expect(totalColumns).toBe(7);
+      expect(salesData[0]).toEqual([
+        "2024-01-15",
+        "North",
+        "Laptop",
+        "5",
+        "999.99",
+        "4999.95",
+        "completed",
+      ]);
+    });
+
+    test("handles nonexistent file paths", () => {
+      const [emptyData, rows, cols] = loadCSV("./nonexistent.csv");
+      expect(emptyData).toEqual([]);
+      expect(rows).toBe(-1);
+      expect(cols).toBe(-1);
+    });
+  });
+
+  describe("Integration", () => {
+    test("should load CSV, slice data, and calculate totals", () => {
+      const [salesData, totalRows, totalColumns] = loadCSV(
+        "./sales_data.csv",
+        [0],
+        []
+      );
+
+      convertToNumber(salesData, 3);
+      const northSales = createSlice(salesData, 1, "North", [5]);
+      const northSalesData = flatten(northSales);
+      const totalNorthSales = findTotal(northSalesData);
+      
+      expect(totalNorthSales).toBe(7099.92);
+    });
+  });
 });
